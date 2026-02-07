@@ -7,6 +7,8 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
+	"encoding/json"
+    "strconv"
 	"flag"
 	"fmt"
 	"log"
@@ -102,8 +104,23 @@ func generate(sequence, isRoot int, hmacSaltB64 string) int {
 		strIsRoot = "ordinary"
 	}
 
-	fmt.Printf("API key v%d seq%d [%s]: %s\nHMAC salt: %s\n", 1, sequence, strIsRoot,
-		base64.URLEncoding.EncodeToString(data[:]), hmacSaltB64)
+	strSequence := strconv.Itoa(sequence)
+
+	result := map[string]string{
+		"v":         "1",
+		"sequence":  strSequence,
+		"is_root":   strIsRoot,
+		"api_key":   base64.URLEncoding.EncodeToString(data[:]),
+		"hmac_salt": hmacSaltB64,
+	}
+
+	jsonResponse, err := json.Marshal(result)
+	if err != nil {
+		log.Println("Error: Failed to marshal JSON", err)
+		return 1
+	}
+
+	fmt.Println(string(jsonResponse))
 
 	return 0
 }
