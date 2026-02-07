@@ -40,7 +40,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/echomessenger/${{ env.IMAGE_NAME }}:latest
-            ghcr.io/echomessenger/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/echomessenger/keygen:latest
+            ghcr.io/echomessenger/keygen:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
